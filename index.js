@@ -49,6 +49,19 @@ d3.json(
     .attr('height', svgHeight)
     .style('background-color', 'white');
 
+  // Tooltip
+  const tooltip = d3
+    .select('#container')
+    .append('h3')
+    .text('hiihi')
+    .attr('id', 'tooltip')
+    .style('position', 'absolute')
+    .style('left', '0')
+    .style('top', '0')
+    .style('visibility', 'hidden');
+
+  //
+
   // Tree Map
   const root = d3
     .hierarchy(dataset)
@@ -58,9 +71,24 @@ d3.json(
   const treemap = d3
     .treemap()
     .size([svgWidth, svgHeight])
-    .padding(1)(root);
+    .paddingInner(1)(root);
 
   const color = d3.scaleOrdinal(d3.schemeAccent);
+
+  d3.select('#container')
+    .selectAll('h4')
+    .data(root.leaves())
+    .enter()
+    .append('h4')
+    .text(d => d.data.name)
+    .style('position', 'absolute')
+    .style('left', d => `${d.x0}px`)
+    .style('top', d => `${d.y0}px`)
+    .style('width', d => `${d.x1 - d.x0}px`)
+    .style('height', d => `${d.y1 - d.y0}px`)
+    .style('font-size', '12px')
+    .style('color', 'black')
+    .style('pointer-events', 'none');
 
   svg
     .selectAll('rect')
@@ -76,36 +104,49 @@ d3.json(
     .attr('width', d => d.x1 - d.x0)
     .attr('height', d => d.y1 - d.y0)
     .style('stroke', 'white')
-    .style('fill', d => color(d.data.category));
-
-  d3.select('#container')
-    .selectAll('h4')
-    .data(root.leaves())
-    .enter()
-    .append('h4')
-    .text(d => d.data.name)
-    .style('position', 'absolute')
-    .style('left', d => `${d.x0}px`)
-    .style('top', d => `${d.y0}px`)
-    .style('width', d => `${d.x1 - d.x0}px`)
-    .style('height', d => `${d.y1 - d.y0}px`)
-    .style('font-size', '12px')
-    .style('color', 'black');
+    .style('fill', d => color(d.data.category))
+    .on('mouseover', d => {
+      tooltip
+        .text(d.data.value)
+        .attr('id', 'tooltip')
+        .attr('data-value', d.data.value)
+        .style('left', `${d.x0}px`)
+        .style('top', `${d.y0}px`)
+        .style('width', `${d.x1 - d.x0}px`)
+        .style('height', `${d.y1 - d.y0}px`)
+        .style('visibility', 'visible');
+    })
+    .on('mouseout', () => tooltip.style('visibility', 'hidden'));
 
   // Legend
   const legend = d3
     .select('#container')
-    .append('div')
+    .append('svg')
     .attr('id', 'legend');
 
   legend
-    .selectAll('h3')
+    .selectAll('rect')
     .data(dataset.children)
     .enter()
-    .append('h3')
+    .append('rect')
+    .attr('class', 'legend-item')
+    .attr('x', (d, i) => (svgWidth / dataset.children.length) * i)
+    .attr('y', 0)
+    .attr('width', svgWidth / dataset.children.length)
+    .attr('height', 60)
+    .attr('fill', d => color(d.name));
+
+  legend
+    .selectAll('text')
+    .data(dataset.children)
+    .enter()
+    .append('text')
     .text(d => d.name)
-    .style('color', 'white')
-    .style('background', d => color(d.name))
-    .style('border', d => `3px ${color(d.name)} solid`)
-    .style('display', 'inline');
+    .attr('x', (d, i) => 10 + (svgWidth / dataset.children.length) * i)
+    .attr('y', 40)
+    .attr('width', svgWidth / dataset.children.length)
+    .attr('height', 60)
+    .attr('fill', 'white')
+    .style('font-size', '25px')
+    .style('text-shadow', '2px 2px black');
 });

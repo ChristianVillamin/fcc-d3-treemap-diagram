@@ -19,10 +19,14 @@ h4 {
   padding: 5px;
 }
 
-h3 {
+/* h3 {
   padding: 5px;
   background: white;
   text-shadow: 2px 2px black;
+} */
+
+#tooltip {
+  background: gray;
 }
 
 #legend {
@@ -30,6 +34,4 @@ h3 {
   display: flex;
   justify-content: space-around;
   align-items: space-around;
-  /* border: 3px #999 solid; */
-  /* background: #white; */
 }
