@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  background: lightyellow;
+}
+
+h4 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 5px;
+}
+
+h3 {
+  padding: 5px;
+  background: white;
+  text-shadow: 2px 2px black;
+}
+
+#legend {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: space-around;
+  /* border: 3px #999 solid; */
+  /* background: #white; */
+}
