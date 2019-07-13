@@ -1,13 +1,8 @@
 d3.json(
-  'https://cdn.rawgit.com/freeCodeCamp/testable-projects-fcc/a80ce8f9/src/data/tree_map/movie-data.json'
+  'https://cdn.rawgit.com/freeCodeCamp/testable-projects-fcc/a80ce8f9/src/data/tree_map/video-game-sales-data.json'
 ).then(dataset => {
   const svgWidth = 1400;
   const svgHeight = 700;
-  const svgPadding = 60;
-  const svgPaddingTop = 90;
-
-  const lol = dataset;
-  console.log(lol);
 
   const container = d3
     .select('body')
@@ -28,17 +23,17 @@ d3.json(
     .text('Movie Sales')
     .style('position', 'absolute')
     .style('left', `${svgWidth / 2}px`)
-    .style('top', '25px')
+    .style('top', '-55px')
     .style('transform', 'translate(-50%, -50%)');
 
   const description = d3
     .select('#container')
-    .append('h2')
+    .append('p')
     .attr('id', 'description')
-    .text('treemap diagram stats')
+    .text('Top 100 Most Sold Video Games Grouped by Platform')
     .style('position', 'absolute')
     .style('left', `${svgWidth / 2}px`)
-    .style('top', '50px')
+    .style('top', '-25px')
     .style('transform', 'translate(-50%, -50%)');
 
   const svg = d3
@@ -52,15 +47,12 @@ d3.json(
   // Tooltip
   const tooltip = d3
     .select('#container')
-    .append('h3')
-    .text('hiihi')
+    .append('p')
+    .text('')
     .attr('id', 'tooltip')
     .style('position', 'absolute')
-    .style('left', '0')
-    .style('top', '0')
+    .style('pointer-events', 'none')
     .style('visibility', 'hidden');
-
-  //
 
   // Tree Map
   const root = d3
@@ -74,21 +66,6 @@ d3.json(
     .paddingInner(1)(root);
 
   const color = d3.scaleOrdinal(d3.schemeAccent);
-
-  d3.select('#container')
-    .selectAll('h4')
-    .data(root.leaves())
-    .enter()
-    .append('h4')
-    .text(d => d.data.name)
-    .style('position', 'absolute')
-    .style('left', d => `${d.x0}px`)
-    .style('top', d => `${d.y0}px`)
-    .style('width', d => `${d.x1 - d.x0}px`)
-    .style('height', d => `${d.y1 - d.y0}px`)
-    .style('font-size', '12px')
-    .style('color', 'black')
-    .style('pointer-events', 'none');
 
   svg
     .selectAll('rect')
@@ -107,9 +84,14 @@ d3.json(
     .style('fill', d => color(d.data.category))
     .on('mouseover', d => {
       tooltip
-        .text(d.data.value)
+        .html(
+          `Category: ${d.data.category}
+          <br/>Value: ${d.data.value}`
+        )
         .attr('id', 'tooltip')
         .attr('data-value', d.data.value)
+        .style('font-size', '12px')
+        .style('color', 'white')
         .style('left', `${d.x0}px`)
         .style('top', `${d.y0}px`)
         .style('width', `${d.x1 - d.x0}px`)
@@ -117,6 +99,21 @@ d3.json(
         .style('visibility', 'visible');
     })
     .on('mouseout', () => tooltip.style('visibility', 'hidden'));
+
+  d3.select('#container')
+    .selectAll('h4')
+    .data(root.leaves())
+    .enter()
+    .append('h4')
+    .text(d => d.data.name)
+    .style('position', 'absolute')
+    .style('left', d => `${d.x0}px`)
+    .style('top', d => `${d.y0}px`)
+    .style('width', d => `${d.x1 - d.x0}px`)
+    .style('height', d => `${d.y1 - d.y0}px`)
+    .style('font-size', '12px')
+    .style('color', '#333')
+    .style('pointer-events', 'none');
 
   // Legend
   const legend = d3
