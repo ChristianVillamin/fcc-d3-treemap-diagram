@@ -11,12 +11,60 @@ body {
   background: lightyellow;
 }
 
+#container,
+#title,
+#description,
+#tooltip {
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+#container {
+  left: 50%;
+  top: 50%;
+
+  box-shadow: 0 0 5px gray;
+}
+
+#title {
+  top: -55px;
+}
+
+#description {
+  top: -25px;
+}
+
+#tooltip {
+  transform: none;
+  pointer-events: none;
+  visibility: hidden;
+  background: #333;
+  color: white;
+  font-size: 12px;
+}
+
+#legend {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: space-around;
+}
+
+.legend-text {
+  font-size: 25px;
+  text-shadow: 2px 2px black;
+}
+
 h4 {
+  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
   padding: 5px;
+  font-size: 12px;
+  color: #333;
+  pointer-events: none;
 }
 
 p {
@@ -29,15 +77,4 @@ p {
 
 h3 {
   text-align: center;
-}
-
-#tooltip {
-  background: #333;
-}
-
-#legend {
-  width: 100%;
-  display: flex;
-  justify-content: space-around;
-  align-items: space-around;
 }
