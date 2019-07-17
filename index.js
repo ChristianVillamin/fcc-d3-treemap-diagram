@@ -10,19 +10,18 @@ d3.select('#container')
 d3.select('#title').style('left', `${svgWidth / 2}px`);
 d3.select('#description').style('left', `${svgWidth / 2}px`);
 
-d3.json(data).then(dataset => {
-  visualize(dataset);
-});
+// SVG
+const svg = d3
+  .select('#container')
+  .append('svg')
+  .attr('class', 'svg-container')
+  .attr('width', svgWidth)
+  .attr('height', svgHeight);
+
+// Data
+d3.json(data).then(dataset => visualize(dataset));
 
 const visualize = dataset => {
-  // SVG
-  const svg = d3
-    .select('#container')
-    .append('svg')
-    .attr('class', 'svg-container')
-    .attr('width', svgWidth)
-    .attr('height', svgHeight);
-
   // Tree Map
   const root = d3
     .hierarchy(dataset)
